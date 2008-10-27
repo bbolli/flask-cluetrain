@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>Clue #{{ n }}</title>
+<style type="text/css"><!--
+.n {
+    position: absolute;
+    top: 50px;
+    left: 10%;
+    color: #d8d8d8;
+    font-size: 120pt;
+    letter-spacing: -8px;
+}
+.t {
+    position: absolute;
+    margin: 40px 16%;
+    color: #666;
+    font-size: 30pt;
+}
+.l {
+    text-align: center;
+    font-size: 175%;
+}
+.l a {
+    text-decoration: none;
+}
+--></style>
+</head>
+<body>
+<p class="l">{% if prev %}<a href="/{{ prev }}" title="previous">«</a>
+{% else %} {% endif %}<a href="/" title="random">*</a>
+{% if next %}<a href="/{{ next }}" title="next">»</a>
+{% else %} {% endif %}</p>
+<div class="n">{{ n }}</div><div class="t">{{ thesis }}</div>
+</body>
+</html>
