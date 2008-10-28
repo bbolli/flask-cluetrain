@@ -48,7 +48,7 @@ class ThesisPage(webapp.RequestHandler):
 application = webapp.WSGIApplication([
     ('/', RandomPage),
     ('/(\d+)', ThesisPage),
-], debug=True)
+], debug=False)
 
 
 def main():
