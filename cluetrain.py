@@ -17,6 +17,7 @@
 import os, random
 import datetime
 import wsgiref.handlers
+import logging
 
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
@@ -26,23 +27,46 @@ from theses import theses
 
 class RandomPage(webapp.RequestHandler):
     def get(self):
-        n = random.randint(1, len(theses))
+        n = random.randint(1, len(theses['en']))
         self.redirect('/%d' % n)
 
 class ThesisPage(webapp.RequestHandler):
+    index_path = os.path.join(os.path.dirname(__file__), 'index.html')
+    default_lang = 'en'
+
     def get(self, n):
+        available = theses.keys()
+        for lang in self.language():
+            if lang in available:
+                break
+        else:
+            lang = self.default_lang
+        th = theses[lang]
         n = int(n)
-        context = {'n': n}
-        if 1 <= n <= len(theses):
-            context['thesis'] = theses[n - 1]
+        if 1 <= n <= len(th):
+            context = {'n': n, 'thesis': th[n - 1]}
             if n > 1:
                 context['prev'] = n - 1
-            if n < len(theses):
+            if n < len(th):
                 context['next'] = n + 1
         else:
-            context = {'n': 404, 'thesis': 'Not found', 'prev': 1, 'next': len(theses)}
-        path = os.path.join(os.path.dirname(__file__), 'index.html')
-        self.response.out.write(template.render(path, context))
+            context = {'n': 404, 'thesis': 'Not found', 'prev': 1, 'next': len(th)}
+        self.response.out.write(template.render(self.index_path, context))
+
+    def language(self):
+        lang = self.request.headers.get('accept-language')
+        if not lang:
+            return []
+        accepted = []
+        for lq in [l.split(';') for l in lang.split(',')]:
+            attrs = dict(l.split('=', 1) for l in lq[1:])
+            try:
+                q = float(attrs.get('q', '1.0'))
+            except ValueError:
+                q = 0
+            accepted.append((q, lq[0][:2]))
+        accepted.sort(reverse=True)
+        return [a[1] for a in accepted]
 
 
 application = webapp.WSGIApplication([
