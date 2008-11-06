@@ -25,13 +25,21 @@ from google.appengine.ext.webapp import template
 from theses import theses
 
 
+root_path = os.path.dirname(__file__)
+
+class TemplatePage(webapp.RequestHandler):
+
+    def render(self, template_file, context={}):
+	self.response.out.write(template.render(
+	    os.path.join(root_path, template_file), context
+	))
+
 class RandomPage(webapp.RequestHandler):
     def get(self):
         n = random.randint(1, len(theses['en']))
         self.redirect('/%d' % n)
 
-class ThesisPage(webapp.RequestHandler):
-    index_path = os.path.join(os.path.dirname(__file__), 'index.html')
+class ThesisPage(TemplatePage):
     default_lang = 'en'
 
     def get(self, n):
@@ -51,7 +59,7 @@ class ThesisPage(webapp.RequestHandler):
                 context['next'] = n + 1
         else:
             context = {'n': 404, 'thesis': 'Not found', 'prev': 1, 'next': len(th)}
-        self.response.out.write(template.render(self.index_path, context))
+        self.render('index.html', context)
 
     def language(self):
         lang = self.request.headers.get('accept-language')
@@ -68,10 +76,15 @@ class ThesisPage(webapp.RequestHandler):
         accepted.sort(reverse=True)
         return [a[1] for a in accepted]
 
+class AboutPage(TemplatePage):
+    def get(self):
+	self.render('about.html')
+
 
 application = webapp.WSGIApplication([
     ('/', RandomPage),
     ('/(\d+)', ThesisPage),
+    ('/about', AboutPage),
 ], debug=False)
 
 
