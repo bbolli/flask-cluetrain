@@ -30,9 +30,9 @@ root_path = os.path.dirname(__file__)
 class TemplatePage(webapp.RequestHandler):
 
     def render(self, template_file, context={}):
-	self.response.out.write(template.render(
-	    os.path.join(root_path, template_file), context
-	))
+        self.response.out.write(template.render(
+            os.path.join(root_path, template_file), context
+        ))
 
 class RandomPage(webapp.RequestHandler):
     def get(self):
@@ -54,11 +54,13 @@ class ThesisPage(TemplatePage):
         if 1 <= n <= len(th):
             context = {'n': n, 'thesis': th[n - 1]}
             if n > 1:
+                context['first'] = 1
                 context['prev'] = n - 1
             if n < len(th):
                 context['next'] = n + 1
+                context['last'] = len(th)
         else:
-            context = {'n': 404, 'thesis': 'Not found', 'prev': 1, 'next': len(th)}
+            context = {'n': 404, 'thesis': 'Not found', 'first': 1, 'last': len(th)}
         self.render('index.html', context)
 
     def language(self):
@@ -78,7 +80,7 @@ class ThesisPage(TemplatePage):
 
 class AboutPage(TemplatePage):
     def get(self):
-	self.render('about.html')
+        self.render('about.html')
 
 
 application = webapp.WSGIApplication([
