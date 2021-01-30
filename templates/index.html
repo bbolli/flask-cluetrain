@@ -1,40 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>clue #{{ n }}</title>
-<style type="text/css"><!--
-body {
-    background-color: white;
-}
-a {
-    text-decoration: none;
-    color: #336;
-}
-.n {
-    position: absolute;
-    top: 65px;
-    left: 10%;
-    color: #d8d8d8;
-    font-size: 120pt;
-    letter-spacing: -8px;
-    z-index: -1;
-}
-.t {
-    margin: 75px 16%;
-    color: #666;
-    font-size: 30pt;
-}
-.h {
-    text-align: center;
-    font-size: 175%;
-}
-.d {
-    color: #d8d8d8;
-}
---></style>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}clue #{{ n }}{% endblock %}
+{% block body %}
 <p class="h">
     {% if first %}<a href="/{{ first }}" title="first">«</a>{% else %}<span class="d">«</span>{% endif %}
     {% if prev %}<a href="/{{ prev }}" title="previous">‹</a>{% else %}<span class="d">‹</span>{% endif %}
@@ -44,5 +10,4 @@ a {
 </p>
 <div class="n">{{ n }}</div>
 <div class="t">{{ thesis }}</div>
-</body>
-</html>
+{% endblock %}
