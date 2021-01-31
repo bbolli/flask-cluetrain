@@ -31,10 +31,14 @@ from theses import theses
 app = Flask(__name__)
 
 
+def url_for_thesis(n):
+    return url_for('thesis', n=n)
+
+
 @app.route('/')
 def index():
     n = random.randint(1, len(theses['en']))
-    return redirect(url_for('thesis', n=n))
+    return redirect(url_for_thesis(n))
 
 
 @app.route('/<int:n>')
@@ -44,13 +48,16 @@ def thesis(n):
     if 1 <= n <= len(th):
         context = {'n': n, 'thesis': th[n - 1]}
         if n > 1:
-            context['first'] = 1
-            context['prev'] = n - 1
+            context['first'] = url_for_thesis(1)
+            context['prev'] = url_for_thesis(n - 1)
         if n < len(th):
-            context['next'] = n + 1
-            context['last'] = len(th)
+            context['next'] = url_for_thesis(n + 1)
+            context['last'] = url_for_thesis(len(th))
     else:
-        context = {'n': 404, 'thesis': 'Not found', 'first': 1, 'last': len(th)}
+        context = {
+            'n': 404, 'thesis': 'Not found',
+            'first': url_for_thesis(1), 'last': url_for_thesis(len(th))
+        }
     return render_template('index.html', **context)
 
 

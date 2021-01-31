@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}about{% endblock %}
 {% block body %}
-<p class="h"><a href="/1" title="home">«</a></p>
+<p class="h"><a href="{{ url_for('thesis', n=1) }}" title="home">«</a></p>
 <div class="n">about</div>
 <div class="t">
     <p>original: <a href="https://cluetrain.com/">cluetrain.com</a></p>

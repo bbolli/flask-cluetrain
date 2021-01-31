@@ -2,11 +2,11 @@
 {% block title %}clue #{{ n }}{% endblock %}
 {% block body %}
 <p class="h">
-    {% if first %}<a href="/{{ first }}" title="first">«</a>{% else %}<span class="d">«</span>{% endif %}
-    {% if prev %}<a href="/{{ prev }}" title="previous">‹</a>{% else %}<span class="d">‹</span>{% endif %}
+    {% if first %}<a href="{{ first }}" title="first">«</a>{% else %}<span class="d">«</span>{% endif %}
+    {% if prev %}<a href="{{ prev }}" title="previous">‹</a>{% else %}<span class="d">‹</span>{% endif %}
     &#x2003;<a href="/" title="random">*</a>&#x2003;<a href="/about" title="about">?</a>&#x2003;
-    {% if next %}<a href="/{{ next }}" title="next">›</a>{% else %}<span class="d">›</span>{% endif %}
-    {% if last %}<a href="/{{ last }}" title="last">»</a>{% else %}<span class="d">»</span>{% endif %}
+    {% if next %}<a href="{{ next }}" title="next">›</a>{% else %}<span class="d">›</span>{% endif %}
+    {% if last %}<a href="{{ last }}" title="last">»</a>{% else %}<span class="d">»</span>{% endif %}
 </p>
 <div class="n">{{ n }}</div>
 <div class="t">{{ thesis }}</div>
