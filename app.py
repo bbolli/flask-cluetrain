@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2007-2021 Beat Bolli <me+python@drbeat.li>
 #
@@ -28,7 +28,7 @@ from flask import (
 
 from theses import theses
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 
 
 def url_for_thesis(n):
