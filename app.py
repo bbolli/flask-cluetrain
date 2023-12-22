@@ -25,6 +25,7 @@ from flask import (
     request,
     url_for,
 )
+import werkzeug.exceptions
 
 from theses import theses
 
@@ -64,6 +65,11 @@ def thesis(n):
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.errorhandler(werkzeug.exceptions.NotFound)
+def handle_not_found(e):
+    return thesis(404)
 
 
 if __name__ == '__main__':
