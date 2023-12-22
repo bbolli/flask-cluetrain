@@ -46,7 +46,7 @@ def thesis(n):
     lang = request.accept_languages.best_match(theses.keys(), 'en')
     th = theses[lang]
     if 1 <= n <= len(th):
-        context = {'n': n, 'thesis': th[n - 1]}
+        context = {'n': n, 'thesis': th[n]}
         if n > 1:
             context['first'] = url_for_thesis(1)
             context['prev'] = url_for_thesis(n - 1)
@@ -55,7 +55,7 @@ def thesis(n):
             context['last'] = url_for_thesis(len(th))
     else:
         context = {
-            'n': 404, 'thesis': 'Not found',
+            'n': 404, 'thesis': th[0],
             'first': url_for_thesis(1), 'last': url_for_thesis(len(th))
         }
     return render_template('index.html', **context)
