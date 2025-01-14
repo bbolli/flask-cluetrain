@@ -31,6 +31,9 @@ from theses import theses
 
 app = Flask(__name__, static_folder=None)
 
+HTTP_OK = 200
+HTTP_NOT_FOUND = 404
+
 
 def url_for_thesis(n):
     return url_for('thesis', n=n)
@@ -54,12 +57,14 @@ def thesis(n):
         if n < len(th):
             context['next'] = url_for_thesis(n + 1)
             context['last'] = url_for_thesis(len(th))
+        status = HTTP_OK
     else:
         context = {
-            'n': 404, 'thesis': th[0],
+            'n': HTTP_NOT_FOUND, 'thesis': th[0],
             'first': url_for_thesis(1), 'last': url_for_thesis(len(th))
         }
-    return render_template('index.html', **context)
+        status = HTTP_NOT_FOUND
+    return render_template('index.html', **context), status
 
 
 @app.route('/about')
